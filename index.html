@@ -18,243 +18,145 @@
     </style>
   </head>
   <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div
-      class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 shadow-lg"
-    >
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 shadow-lg">
       <div class="container mx-auto px-4 text-center">
         <h1 class="text-xl font-bold mb-2">ธรรมศึกษา 2568</h1>
       </div>
     </div>
 
     <div class="container mx-auto px-4 py-8">
-        <!-- Splash Screen -->
-  <div
-    id="splashScreen"
-    class="fixed inset-0 bg-blue-300 flex flex-col items-center justify-center z-50"
-  >
-    <img
-      src="https://res.cloudinary.com/gukkghu/image/upload/v1646575846/gukkghu/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%AD%E0%B8%AD%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD_aytvpq.png"
-      alt="โลโก้"
-      class="w-32 mb-6"
-    />
-    <h1 class="text-3xl font-bold text-blue-700">ยินดีต้อนรับ</h1>
-  </div>
+      <!-- Splash Screen -->
+      <div id="splashScreen" class="fixed inset-0 bg-blue-300 flex flex-col items-center justify-center z-50 transition-opacity duration-500">
+        <img
+          src="https://res.cloudinary.com/gukkghu/image/upload/v1646575846/gukkghu/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%AD%E0%B8%AD%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD_aytvpq.png"
+          alt="โลโก้"
+          class="w-32 mb-6"
+        />
+        <h1 class="text-3xl font-bold text-blue-700">ยินดีต้อนรับ</h1>
+      </div>
 
-  <!-- เนื้อหาหน้าเว็บทั้งหมด (เหมือนเดิม) -->
-  <div id="mainContent" class="opacity-0 transition-opacity duration-500">
-    <!-- ... ส่วนเนื้อหาทั้งหมดของเว็บคุณ ... -->
-  </div>
-      
+      <!-- เนื้อหาหน้าเว็บทั้งหมด -->
+      <div id="mainContent" class="opacity-0 transition-opacity duration-500">
+        
         <!-- Loading indicator -->
-      <div id="loading" class="text-center py-8">
-        <div
-          class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"
-        ></div>
-        <p class="mt-2 text-gray-600">กำลังโหลดข้อมูล...</p>
-      </div>
-
-      <!-- Statistics Cards -->
-      <div id="statsSection" class="hidden mb-2">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">
-          สถิติข้อมูลการสอบธรรมศึกษา
-        </h2>
-        <div id="statsCards" class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-3">
-          <!-- Stats cards will be populated here -->
-        </div>
-      </div>
-
-      <div class="container mx-auto px-4 py-4">
-        <button
-          id="toggleSearchBtn"
-          class="bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700 transition"
-        >
-          🔍 ค้นหาข้อมูล
-        </button>
-      </div>
-
-      <!-- Search Section -->
-      <div
-        id="searchSection"
-        class="max-h-0 overflow-hidden bg-white rounded-xl shadow-lg p-6 mb-8 transition-all duration-300"
-        style="opacity: 0; padding-top: 0; padding-bottom: 0"
-      >
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6">ค้นหาข้อมูล</h2>
-
-        <!-- Name/Surname Search -->
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >ค้นหาจากชื่อ-นามสกุล</label
-          >
-          <input
-            type="text"
-            id="nameSearch"
-            placeholder="พิมพ์ชื่อหรือนามสกุล..."
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+        <div id="loading" class="text-center py-8">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p class="mt-2 text-gray-600">กำลังโหลดข้อมูล...</p>
         </div>
 
-        <!-- Status Filter Buttons -->
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-3"
-            >กรองตามสถานะ</label
-          >
-          <div id="statusButtons" class="flex flex-wrap gap-2">
-            <button
-              onclick="filterByStatus('all')"
-              class="status-btn active px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-blue-600 text-white"
-            >
-              📋 ทั้งหมด
-            </button>
-            <button
-              onclick="filterByStatus('ตรี')"
-              class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100"
-            >
-              🥉 ตรี
-            </button>
-            <button
-              onclick="filterByStatus('โท')"
-              class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100"
-            >
-              🥈 โท
-            </button>
-            <button
-              onclick="filterByStatus('เอก')"
-              class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100"
-            >
-              🥇 เอก
-            </button>
-            <button
-              onclick="filterByStatus('ไม่มีรายชื่อสอบ')"
-              class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100"
-            >
-              🚫 ไม่มีรายชื่อสอบ
-            </button>
-            <button
-              onclick="filterByStatus('สำเร็จนักธรรมเอกไปแล้ว')"
-              class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100"
-            >
-              ✅ สำเร็จนักธรรมเอกแล้ว
-            </button>
+        <!-- Statistics Cards -->
+        <div id="statsSection" class="hidden mb-2">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">สถิติข้อมูลการสอบธรรมศึกษา</h2>
+          <div id="statsCards" class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-3">
+            <!-- Stats cards will be populated here -->
           </div>
         </div>
 
-        <!-- Classroom Dropdown -->
-        <div class="mb-8">
-          <label class="block text-sm font-medium text-gray-700 mb-4"
-            >เลือกห้องเรียน</label
-          >
-          <select
-            id="classroomSelect"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">เลือกห้องเรียน</option>
-            <option value="ป.4">ป.4</option>
-            <option value="ป.5">ป.5</option>
-            <option value="ป.6">ป.6</option>
-            <option value="ม.1/1">ม.1/1</option>
-            <option value="ม.1/2">ม.1/2</option>
-            <option value="ม.2">ม.2</option>
-            <option value="ม.3">ม.3</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Classroom Table Results -->
-      <!-- Classroom Table Results -->
-      <div
-        id="classroomResults"
-        class="hidden bg-white rounded-xl shadow-lg p-6 mb-8"
-      >
-        <div class="flex justify-end items-center mb-4 gap-2">
-          <button
-            id="printClassroomBtn"
-            onclick="printClassroomTable()"
-            class="hidden bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            🖨️ พิมพ์รายชื่อ
-          </button>
-
-          <button
-            id="printPdfBtn"
-            onclick="printPdfClassroom()"
-            class="hidden bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-          >
-            📄 พิมพ์ PDF
+        <div class="py-4">
+          <button id="toggleSearchBtn" class="bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700 transition">
+            🔍 ค้นหาข้อมูล
           </button>
         </div>
 
-        <div class="overflow-x-auto" id="classroomTableWrapper">
-          <table class="w-full table-auto" id="classroomTable">
-            <thead>
-              <tr class="bg-blue-50">
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  ลำดับ
-                </th>
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  เพศ
-                </th>
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  ชื่อ
-                </th>
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  นามสกุล
-                </th>
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  ห้องเรียน
-                </th>
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  สถานะ
-                </th>
-                <th
-                  class="px-4 py-3 text-left text-sm font-semibold text-gray-700"
-                >
-                  ผลสอบ
-                </th>
-              </tr>
-            </thead>
-            <tbody id="classroomTableBody">
-              <!-- Table rows will be populated here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <!-- Search Section -->
+        <div id="searchSection" class="max-h-0 overflow-hidden bg-white rounded-xl shadow-lg p-6 mb-8 transition-all duration-300" style="opacity: 0; padding-top: 0; padding-bottom: 0;">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-6">ค้นหาข้อมูล</h2>
 
-      <!-- Search Results Cards -->
-      <div id="searchResults" class="hidden">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">ผลการค้นหา</h3>
-        <div
-          id="resultsContainer"
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <!-- Result cards will be populated here -->
-        </div>
-      </div>
+          <!-- Name/Surname Search -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">ค้นหาจากชื่อ-นามสกุล</label>
+            <input type="text" id="nameSearch" placeholder="พิมพ์ชื่อหรือนามสกุล..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+          </div>
 
-      <!-- No Results Message -->
-      <div id="noResults" class="hidden text-center py-8">
-        <div class="text-gray-500 text-lg">ไม่พบข้อมูลที่ค้นหา</div>
+          <!-- Status Filter Buttons -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">กรองตามสถานะ</label>
+            <div id="statusButtons" class="flex flex-wrap gap-2">
+              <button onclick="filterByStatus('all', this)" class="status-btn active px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-blue-600 text-white">
+                📋 ทั้งหมด
+              </button>
+              <button onclick="filterByStatus('ตรี', this)" class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100">
+                🥉 ตรี
+              </button>
+              <button onclick="filterByStatus('โท', this)" class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100">
+                🥈 โท
+              </button>
+              <button onclick="filterByStatus('เอก', this)" class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100">
+                🥇 เอก
+              </button>
+              <button onclick="filterByStatus('ไม่มีรายชื่อสอบ', this)" class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100">
+                🚫 ไม่มีรายชื่อสอบ
+              </button>
+              <button onclick="filterByStatus('สำเร็จนักธรรมเอกไปแล้ว', this)" class="status-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-blue-100">
+                ✅ สำเร็จนักธรรมเอกไปแล้ว
+              </button>
+            </div>
+          </div>
+
+          <!-- Classroom Dropdown -->
+          <div class="mb-8">
+            <label class="block text-sm font-medium text-gray-700 mb-4">เลือกห้องเรียน</label>
+            <select id="classroomSelect" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">เลือกห้องเรียน</option>
+              <option value="ป.4">ป.4</option>
+              <option value="ป.5">ป.5</option>
+              <option value="ป.6">ป.6</option>
+              <option value="ม.1/1">ม.1/1</option>
+              <option value="ม.1/2">ม.1/2</option>
+              <option value="ม.2">ม.2</option>
+              <option value="ม.3">ม.3</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Classroom Table Results -->
+        <div id="classroomResults" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+          <div class="flex justify-end items-center mb-4 gap-2">
+            <button id="printClassroomBtn" onclick="printClassroomTable()" class="hidden bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+              🖨️ พิมพ์รายชื่อ
+            </button>
+            <button id="printPdfBtn" onclick="printPdfClassroom()" class="hidden bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+              📄 พิมพ์ PDF
+            </button>
+          </div>
+
+          <div class="overflow-x-auto" id="classroomTableWrapper">
+            <table class="w-full table-auto" id="classroomTable">
+              <thead>
+                <tr class="bg-blue-50">
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ลำดับ</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">เพศ</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ชื่อ</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">นามสกุล</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ห้องเรียน</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">สถานะ</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ผลสอบ</th>
+                </tr>
+              </thead>
+              <tbody id="classroomTableBody">
+                <!-- Table rows will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Search Results Cards -->
+        <div id="searchResults" class="hidden">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">ผลการค้นหา</h3>
+          <div id="resultsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Result cards will be populated here -->
+          </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-8">
+          <div class="text-gray-500 text-lg">ไม่พบข้อมูลที่ค้นหา</div>
+        </div>
       </div>
     </div>
 
     <!-- ปุ่มลอยกลับไปบนสุด -->
-    <button
-      id="scrollToTopBtn"
-      title="กลับไปบนสุด"
-      class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-opacity opacity-0 pointer-events-none"
-      style="z-index: 1000"
-    >
+    <button id="scrollToTopBtn" title="กลับไปบนสุด" class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-opacity opacity-0 pointer-events-none" style="z-index: 1000">
       ⬆️
     </button>
 
@@ -265,9 +167,7 @@
       // Fetch data from API
       async function fetchData() {
         try {
-          const response = await fetch(
-            "https://opensheet.elk.sh/1KJ9U3ImzEG8--cIbn_BiACQPfJzrGz3vxbIfBjBYTug/data"
-          );
+          const response = await fetch("https://opensheet.elk.sh/1KJ9U3ImzEG8--cIbn_BiACQPfJzrGz3vxbIfBjBYTug/data");
           const data = await response.json();
           allData = data;
 
@@ -279,50 +179,48 @@
           setupEventListeners();
         } catch (error) {
           console.error("Error fetching data:", error);
-          document.getElementById("loading").innerHTML =
-            '<p class="text-red-600">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+          document.getElementById("loading").innerHTML = '<p class="text-red-600">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
         }
       }
 
       // Generate statistics cards
       function generateStats() {
         const stats = {
-          ตรี: 0,
-          โท: 0,
-          เอก: 0,
-          ไม่มีรายชื่อสอบ: 0,
-          สำเร็จนักธรรมเอกไปแล้ว: 0,
+          'ตรี': 0,
+          'โท': 0,
+          'เอก': 0,
+          'ไม่มีรายชื่อสอบ': 0,
+          'สำเร็จนักธรรมเอกไปแล้ว': 0,
         };
 
         allData.forEach((item) => {
-          if (stats.hasOwnProperty(item.statust_test)) {
-            stats[item.statust_test]++;
+          const status = (item.statust_test || "").trim();
+          if (stats.hasOwnProperty(status)) {
+            stats[status]++;
           }
         });
 
         const colors = {
-          ตรี: "bg-green-500",
-          โท: "bg-blue-500",
-          เอก: "bg-amber-600",
-          ไม่มีรายชื่อสอบ: "bg-gray-500",
-          สำเร็จนักธรรมเอกไปแล้ว: "bg-yellow-500",
-          รวมทั้งหมด: "bg-purple-600",
+          'ตรี': "bg-green-500",
+          'โท': "bg-blue-500",
+          'เอก': "bg-amber-600",
+          'ไม่มีรายชื่อสอบ': "bg-gray-500",
+          'สำเร็จนักธรรมเอกไปแล้ว': "bg-yellow-500",
+          'รวมทั้งหมด': "bg-purple-600",
         };
 
         const statsContainer = document.getElementById("statsCards");
         statsContainer.innerHTML = "";
 
-        // รวมแค่ ตรี, โท, เอก เท่านั้น
-        const totalCount = stats.ตรี + stats.โท + stats.เอก;
+        const totalCount = stats['ตรี'] + stats['โท'] + stats['เอก'];
 
         const totalCard = document.createElement("div");
         totalCard.className = "bg-white rounded-lg shadow-md p-4 text-center";
         totalCard.innerHTML = `
-        <div class="w-12 h-12 ${colors["รวมทั้งหมด"]} rounded-full mx-auto mb-2 flex items-center justify-center">
+        <div class="w-12 h-12 ${colors['รวมทั้งหมด']} rounded-full mx-auto mb-2 flex items-center justify-center">
             <span class="text-white font-bold text-lg">${totalCount}</span>
         </div>
-        <h3 class="font-semibold text-gray-800 text-sm">รวม ตรี, โท, เอก</h3>
-    `;
+        <h3 class="font-semibold text-gray-800 text-sm">รวม ตรี, โท, เอก</h3>`;
         statsContainer.appendChild(totalCard);
 
         Object.entries(stats).forEach(([status, count]) => {
@@ -332,79 +230,65 @@
               <div class="w-12 h-12 ${colors[status]} rounded-full mx-auto mb-2 flex items-center justify-center">
                   <span class="text-white font-bold text-lg">${count}</span>
               </div>
-              <h3 class="font-semibold text-gray-800 text-sm">${status}</h3>
-          `;
+              <h3 class="font-semibold text-gray-800 text-sm">${status}</h3>`;
           statsContainer.appendChild(card);
         });
       }
 
       // Setup event listeners
       function setupEventListeners() {
-        // Name search
-        document
-          .getElementById("nameSearch")
-          .addEventListener("input", function (e) {
-            const searchTerm = e.target.value.toLowerCase();
-            if (searchTerm.length > 0) {
-              searchByName(searchTerm);
-            } else {
-              hideResults();
-            }
-          });
+        document.getElementById("nameSearch").addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          if (searchTerm.length > 0) {
+            searchByName(searchTerm);
+          } else {
+            hideResults();
+          }
+        });
 
-        // Classroom select
-        document
-          .getElementById("classroomSelect")
-          .addEventListener("change", function (e) {
-            const classroom = e.target.value;
-            if (classroom) {
-              searchByClassroom(classroom);
-            } else {
-              hideClassroomResults();
-            }
-          });
+        document.getElementById("classroomSelect").addEventListener("change", function (e) {
+          const classroom = e.target.value;
+          if (classroom) {
+            searchByClassroom(classroom);
+          } else {
+            hideClassroomResults();
+          }
+        });
       }
 
-      // Filter by status
-      // Filter by status
-function filterByStatus(status) {
-  currentFilter = status;
+      // Filter by status (รองรับ this element)
+      function filterByStatus(status, btnElement) {
+        currentFilter = status;
 
-  // Update button styles
-  document.querySelectorAll(".status-btn").forEach((btn) => {
-    btn.classList.remove("active", "bg-blue-600", "text-white");
-    btn.classList.add("bg-gray-200", "text-gray-700");
-  });
-  event.target.classList.add("active", "bg-blue-600", "text-white");
-  event.target.classList.remove("bg-gray-200", "text-gray-700");
+        // Update button styles
+        document.querySelectorAll(".status-btn").forEach((btn) => {
+          btn.classList.remove("active", "bg-blue-600", "text-white");
+          btn.classList.add("bg-gray-200", "text-gray-700");
+        });
+        if(btnElement) {
+          btnElement.classList.add("active", "bg-blue-600", "text-white");
+          btnElement.classList.remove("bg-gray-200", "text-gray-700");
+        }
 
-  // ซ่อนตารางห้องเรียนทุกครั้งที่มีการค้นหาจากส่วนนี้
-  hideClassroomResults();
+        hideClassroomResults();
 
-  // Apply filter
-  const nameSearch = document.getElementById("nameSearch").value.toLowerCase();
-  if (nameSearch.length > 0) {
-    searchByName(nameSearch);
-  } else if (status === "all") {
-    // แสดงข้อมูลทั้งหมด
-    displaySearchResults(allData);
-  } else {
-    const filtered = allData.filter((item) => item.statust_test === status);
-    displaySearchResults(filtered);
-  }
-}
+        const nameSearch = document.getElementById("nameSearch").value.toLowerCase();
+        if (nameSearch.length > 0) {
+          searchByName(nameSearch);
+        } else if (status === "all") {
+          displaySearchResults(allData);
+        } else {
+          const filtered = allData.filter((item) => (item.statust_test || "").trim() === status);
+          displaySearchResults(filtered);
+        }
+      }
 
-
-      // Search by name
       function normalizeThai(text) {
-        return text
-          ? text.toString().trim().replace(/\s+/g, "") // ตัดช่องว่างทั้งหมด
-          : "";
+        return text ? text.toString().trim().replace(/\s+/g, "") : "";
       }
 
       function searchByName(searchTerm) {
         const normalizedSearch = normalizeThai(searchTerm);
-
         let filtered = allData.filter(
           (item) =>
             normalizeThai(item.name).includes(normalizedSearch) ||
@@ -412,16 +296,12 @@ function filterByStatus(status) {
         );
 
         if (currentFilter !== "all") {
-          filtered = filtered.filter(
-            (item) => item.statust_test === currentFilter
-          );
+          filtered = filtered.filter((item) => (item.statust_test || "").trim() === currentFilter);
         }
-
         displaySearchResults(filtered);
         hideClassroomResults();
       }
 
-      // Search by classroom
       function searchByClassroom(classroom) {
         const filtered = allData.filter((item) => item.classroom === classroom);
         displayClassroomResults(filtered, classroom);
@@ -429,139 +309,81 @@ function filterByStatus(status) {
       }
 
       // Display search results as cards
-function displaySearchResults(results) {
-  const container = document.getElementById("resultsContainer");
-  const resultsSection = document.getElementById("searchResults");
-  const noResults = document.getElementById("noResults");
+      function displaySearchResults(results) {
+        const container = document.getElementById("resultsContainer");
+        const resultsSection = document.getElementById("searchResults");
+        const noResults = document.getElementById("noResults");
 
-  if (results.length === 0) {
-    resultsSection.classList.add("hidden");
-    noResults.classList.remove("hidden");
-    return;
-  }
+        if (results.length === 0) {
+          resultsSection.classList.add("hidden");
+          noResults.classList.remove("hidden");
+          return;
+        }
 
-  noResults.classList.add("hidden");
-  resultsSection.classList.remove("hidden");
+        noResults.classList.add("hidden");
+        resultsSection.classList.remove("hidden");
+        container.innerHTML = "";
 
-  container.innerHTML = "";
+        results.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200";
 
-  results.forEach((item) => {
-    const card = document.createElement("div");
-    card.className =
-      "bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200";
+          const statusString = (item.statust_test || "").trim();
+          const isCompleted = statusString.includes("สำเร็จ");
+          const hasExamRight = String(item.test).toUpperCase() === "TRUE"; // รองรับเคสสตริง "TRUE" หรือบูลีน
 
-    const isCompleted =
-      item.statust_test && item.statust_test.includes("สำเร็จ");
-    const hasExamRight = item.test === "TRUE" || item.test === true;
+          const genderRaw = (item.gender || "").toString().toLowerCase();
+          let genderEmoji = "⚧", genderIcon = "👤";
+          if (genderRaw.includes("ช") || genderRaw.includes("นาย")) {
+            genderEmoji = "♂️"; genderIcon = "🧑";
+          } else if (genderRaw.includes("ห") || genderRaw.includes("นาง")) {
+            genderEmoji = "♀️"; genderIcon = "👩";
+          }
 
-    const genderRaw = (item.gender || "").toString().toLowerCase();
-    let genderEmoji, genderIcon;
+          const statusColor = {
+            'ตรี': "bg-green-100 text-green-800",
+            'โท': "bg-blue-100 text-blue-800",
+            'เอก': "bg-amber-100 text-amber-800",
+            'ไม่มีรายชื่อสอบ': "bg-gray-100 text-gray-800",
+            'สำเร็จนักธรรมเอกไปแล้ว': "bg-yellow-100 text-yellow-800",
+          }[statusString] || "bg-gray-100 text-gray-800";
 
-    if (genderRaw.includes("ช")) {
-      genderEmoji = "♂️";
-      genderIcon = "🧑"; // หรือ 👨
-    } else if (genderRaw.includes("ห")) {
-      genderEmoji = "♀️";
-      genderIcon = "👩";
-    } else {
-      genderEmoji = "⚧";
-      genderIcon = "👤";
-    }
+          const examInfo = isCompleted
+            ? '<p class="text-yellow-600 font-medium">🏆 ไม่ต้องสอบแล้ว</p>'
+            : hasExamRight
+            ? '<p class="text-green-600 font-medium">✓ มีสิทธิ์สอบ</p>'
+            : '<p class="text-red-600 font-medium">✗ ไม่มีสิทธิ์สอบ</p>';
 
-    const statusColor =
-      {
-        ตรี: "bg-green-100 text-green-800",
-        โท: "bg-blue-100 text-blue-800",
-        เอก: "bg-amber-100 text-amber-800",
-        ไม่มีรายชื่อสอบ: "bg-gray-100 text-gray-800",
-        สำเร็จนักธรรมเอกแล้ว: "bg-yellow-100 text-yellow-800",
-      }[item.statust_test] || "bg-gray-100 text-gray-800";
+          let examResultInfo = "";
+          switch ((item.resualt || "").trim()) {
+            case "สอบผ่าน": examResultInfo = `<p class="text-green-700 font-medium">✓ สอบผ่าน</p>`; break;
+            case "สอบไม่ผ่าน": examResultInfo = `<p class="text-red-700 font-medium">✗ สอบไม่ผ่าน</p>`; break;
+            case "ไม่ได้เข้าสอบ": examResultInfo = `<p class="text-gray-500 font-medium">– ไม่ได้เข้าสอบ</p>`; break;
+            case "รอผลสอบ": examResultInfo = `<p class="text-yellow-600 font-medium">⏳ รอผลสอบ</p>`; break;
+            case "กำลังจะสอบ": examResultInfo = `<p class="text-blue-600 font-medium">🕒 กำลังจะสอบ</p>`; break;
+          }
 
-    const examInfo = isCompleted
-      ? '<p class="text-yellow-600 font-medium">🏆 ไม่ต้องสอบแล้ว</p>'
-      : hasExamRight
-      ? '<p class="text-green-600 font-medium">✓ มีสิทธิ์สอบ</p>'
-      : '<p class="text-red-600 font-medium">✗ ไม่มีสิทธิ์สอบ</p>';
+          card.innerHTML = `
+            <div class="flex justify-between items-start mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-medium ${statusColor}">${statusString || "-"}</span>
+              <span class="text-sm text-gray-500">${item.classroom || "-"}</span>
+            </div>
+            <div class="flex items-center gap-3 mb-2">
+              <span class="inline-flex w-9 h-9 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xl">${genderIcon}</span>
+              <h3 class="text-lg font-semibold text-gray-800 m-0">${item.name || "-"} ${item.surname || ""}</h3>
+            </div>
+            <div class="text-sm text-gray-600 space-y-2">
+              <p class="flex items-center gap-2"><span class="inline-flex w-6 h-6 items-center justify-center text-lg">${genderEmoji}</span><span><span class="font-medium">เพศ:</span> ${item.gender || "-"}</span></p>
+              <p class="flex items-center gap-2"><span class="inline-flex w-6 h-6 items-center justify-center text-lg">🎓</span><span><span class="font-medium">ระดับชั้น:</span> ${item.status_class || "-"}</span></p>
+              ${examInfo}
+              ${examResultInfo}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
 
-    // เพิ่มส่วนผลสอบจาก item.resault
-let examResultInfo = "";
-switch ((item.resualt || "").trim()) {
-  case "สอบผ่าน":
-    examResultInfo = `<p class="text-green-700 font-medium">✓ สอบผ่าน</p>`;
-    break;
-  case "สอบไม่ผ่าน":
-    examResultInfo = `<p class="text-red-700 font-medium">✗ สอบไม่ผ่าน</p>`;
-    break;
-  case "ไม่ได้เข้าสอบ":
-    examResultInfo = `<p class="text-gray-500 font-medium">– ไม่ได้เข้าสอบ</p>`;
-    break;
-  case "รอผลสอบ":
-    examResultInfo = `<p class="text-yellow-600 font-medium">⏳ รอผลสอบ</p>`;
-    break;
-  case "กำลังจะสอบ":
-    examResultInfo = `<p class="text-blue-600 font-medium">🕒 กำลังจะสอบ</p>`;
-    break;
-  default:
-    examResultInfo = "";
-}
-
-
-    card.innerHTML = `
-      <div class="flex justify-between items-start mb-3">
-        <span class="px-3 py-1 rounded-full text-xs font-medium ${statusColor}">
-          ${item.statust_test || "-"}
-        </span>
-        <span class="text-sm text-gray-500">${item.classroom || "-"}</span>
-      </div>
-
-      <div class="flex items-center gap-3 mb-2">
-        <span class="inline-flex w-9 h-9 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xl">
-          ${genderIcon}
-        </span>
-        <h3 class="text-lg font-semibold text-gray-800 m-0">
-          ${item.name || "-"} ${item.surname || ""}
-        </h3>
-      </div>
-
-      <div class="text-sm text-gray-600 space-y-2">
-        <p class="flex items-center gap-2">
-          <span class="inline-flex w-6 h-6 items-center justify-center text-lg">${genderEmoji}</span>
-          <span><span class="font-medium">เพศ:</span> ${item.gender || "-"}</span>
-        </p>
-
-        <p class="flex items-center gap-2">
-          <span class="inline-flex w-6 h-6 items-center justify-center text-lg">🎓</span>
-          <span><span class="font-medium">ระดับชั้น:</span> ${item.status_class || "-"}</span>
-        </p>
-
-        ${examInfo}
-        ${examResultInfo}
-      </div>
-    `;
-
-    container.appendChild(card);
-  });
-}
-
-
-      // Display classroom results as table
-      // กำหนดฟอนต์ pdfMake (ใช้ตามที่คุณให้มา)
-      pdfMake.fonts = {
-        THSarabunNew: {
-          normal: "https://guykorat.github.io/font/THSarabunNew.ttf",
-          bold: "https://guykorat.github.io/font/Sarabun-ExtraBold.ttf",
-        },
-        Charm: {
-          normal: "https://guykorat.github.io/font/Charm-Bold.ttf",
-          bold: "https://guykorat.github.io/font/Charm-Regular.ttf",
-        },
-        Prompt: {
-          normal: "https://guykorat.github.io/font/Prompt-Regular.ttf",
-          bold: "https://guykorat.github.io/font/Prompt-Bold.ttf",
-        },
-      };
-
-      let currentClassroomData = []; // เก็บข้อมูลปัจจุบันของตาราง
+      let currentClassroomData = [];
 
       function displayClassroomResults(results, classroom) {
         const tableBody = document.getElementById("classroomTableBody");
@@ -583,63 +405,64 @@ switch ((item.resualt || "").trim()) {
         resultsSection.classList.remove("hidden");
         printBtn.classList.remove("hidden");
         printPdfBtn.classList.remove("hidden");
-
         tableBody.innerHTML = "";
 
         results.forEach((item, index) => {
           const row = document.createElement("tr");
           row.className = index % 2 === 0 ? "bg-white" : "bg-gray-50";
 
-          const statusColor =
-            {
-              ตรี: "bg-green-100 text-green-800",
-              โท: "bg-blue-100 text-blue-800",
-              เอก: "bg-purple-100 text-purple-800",
-              ไม่มีรายชื่อสอบ: "bg-gray-100 text-gray-800",
-              สำเร็จนักธรรมเอกแล้ว: "bg-yellow-100 text-yellow-800",
-            }[item.statust_test] || "bg-gray-100 text-gray-800";
+          const statusString = (item.statust_test || "").trim();
+          const statusColor = {
+            'ตรี': "bg-green-100 text-green-800",
+            'โท': "bg-blue-100 text-blue-800",
+            'เอก': "bg-amber-100 text-amber-800",
+            'ไม่มีรายชื่อสอบ': "bg-gray-100 text-gray-800",
+            'สำเร็จนักธรรมเอกไปแล้ว': "bg-yellow-100 text-yellow-800",
+          }[statusString] || "bg-gray-100 text-gray-800";
 
-        const resualtColor = {
-          รอผลสอบ: "bg-yellow-700 text-yellow-100",
-          กำลังจะสอบ: "bg-blue-700 text-blue-100",
-          สอบผ่าน: "bg-green-700 text-green-100",
-          สอบไม่ผ่าน: "bg-red-700 text-red-100",
-        }[item.resualt] || "bg-gray-700 text-gray-100";
-
+          const resualtColor = {
+            'รอผลสอบ': "bg-yellow-700 text-yellow-100",
+            'กำลังจะสอบ': "bg-blue-700 text-blue-100",
+            'สอบผ่าน': "bg-green-700 text-green-100",
+            'สอบไม่ผ่าน': "bg-red-700 text-red-100",
+            'ไม่ได้เข้าสอบ': "bg-gray-700 text-gray-100" // เพิ่มสถานะใหม่
+          }[(item.resualt || "").trim()] || "bg-gray-700 text-gray-100";
 
           row.innerHTML = `
-      <td class="px-4 py-3 text-xs text-gray-900">${index + 1}</td>
-      <td class="px-4 py-3 text-xs text-gray-900">${item.gender}</td>
-      <td class="px-4 py-3 text-xs text-gray-900">${item.name}</td>
-      <td class="px-4 py-3 text-xs font-medium text-gray-900">${
-        item.surname
-      }</td>
-      <td class="px-4 py-3 text-xs text-gray-900">${item.classroom}</td>
-      <td class="px-4 py-3">
-          <span class="px-2 py-1 rounded-full text-xs font-medium ${statusColor}">
-              ${item.statust_test}
-          </span>
-      </td>
-      <td class="px-4 py-3">
-          <span class="px-2 py-1 rounded-full text-xs font-medium ${resualtColor}">
-              ${item.resualt}
-          </span>
-      </td>
-    `;
+            <td class="px-4 py-3 text-xs text-gray-900">${index + 1}</td>
+            <td class="px-4 py-3 text-xs text-gray-900">${item.gender || "-"}</td>
+            <td class="px-4 py-3 text-xs text-gray-900">${item.name || "-"}</td>
+            <td class="px-4 py-3 text-xs font-medium text-gray-900">${item.surname || ""}</td>
+            <td class="px-4 py-3 text-xs text-gray-900">${item.classroom || "-"}</td>
+            <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs font-medium ${statusColor}">${statusString || "-"}</span></td>
+            <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs font-medium ${resualtColor}">${item.resualt || "-"}</span></td>
+          `;
           tableBody.appendChild(row);
         });
-
         currentClassroomData = results;
       }
 
-      // ฟังก์ชันพิมพ์ pdf
+      pdfMake.fonts = {
+        THSarabunNew: {
+          normal: "https://guykorat.github.io/font/THSarabunNew.ttf",
+          bold: "https://guykorat.github.io/font/Sarabun-ExtraBold.ttf",
+        },
+        Charm: {
+          normal: "https://guykorat.github.io/font/Charm-Bold.ttf",
+          bold: "https://guykorat.github.io/font/Charm-Regular.ttf",
+        },
+        Prompt: {
+          normal: "https://guykorat.github.io/font/Prompt-Regular.ttf",
+          bold: "https://guykorat.github.io/font/Prompt-Bold.ttf",
+        },
+      };
+
       function printPdfClassroom() {
         if (!currentClassroomData.length) {
           alert("ไม่มีข้อมูลให้พิมพ์ PDF");
           return;
         }
 
-        // สร้าง body ตารางใน PDF
         const body = [
           [
             { text: "ลำดับ", style: "tableHeader" },
@@ -648,6 +471,7 @@ switch ((item.resualt || "").trim()) {
             { text: "นามสกุล", style: "tableHeader" },
             { text: "ห้องเรียน", style: "tableHeader" },
             { text: "สถานะ", style: "tableHeader" },
+            { text: "ผลสอบ", style: "tableHeader" }, // เพิ่ม Header ให้ตรงตาราง HTML
           ],
         ];
 
@@ -659,6 +483,7 @@ switch ((item.resualt || "").trim()) {
             item.surname || "-",
             item.classroom || "-",
             item.statust_test || "-",
+            item.resualt || "-", // ส่งค่าผลสอบลง PDF
           ]);
         });
 
@@ -669,89 +494,54 @@ switch ((item.resualt || "").trim()) {
               style: "tableExample",
               table: {
                 headerRows: 1,
-                widths: ["auto", "*", "*", "*", "auto", "auto"],
+                widths: ["auto", "auto", "*", "*", "auto", "auto", "auto"],
                 body: body,
               },
               layout: {
                 fillColor: function (rowIndex) {
-                  if (rowIndex === 0) {
-                    return "#CCCCCC"; // สี header
-                  }
-                  // rowIndex 1 ขึ้นไปคือข้อมูลจริง (ลบ 1 เพราะ body index -1)
+                  if (rowIndex === 0) return "#CCCCCC";
                   const dataIndex = rowIndex - 1;
-                  if (
-                    currentClassroomData[dataIndex] &&
-                    currentClassroomData[dataIndex].statust_test ===
-                      "ไม่มีรายชื่อสอบ"
-                  ) {
-                    return "#f8d7da"; // สีแดงอ่อนพื้นหลังแถวที่สถานะเป็น ไม่มีรายชื่อสอบ
+                  if (currentClassroomData[dataIndex] && currentClassroomData[dataIndex].statust_test === "ไม่มีรายชื่อสอบ") {
+                    return "#f8d7da";
                   }
                   return null;
                 },
               },
             },
           ],
-          defaultStyle: {
-            font: "THSarabunNew",
-            fontSize: 16,
-          },
+          defaultStyle: { font: "THSarabunNew", fontSize: 16 },
           styles: {
-            header: {
-              fontSize: 20,
-              bold: true,
-              marginBottom: 15,
-            },
-            tableExample: {
-              margin: [0, 5, 0, 15],
-            },
-            tableHeader: {
-              bold: true,
-              fontSize: 12,
-              color: "black",
-            },
+            header: { fontSize: 20, bold: true, marginBottom: 15 },
+            tableExample: { margin: [0, 5, 0, 15] },
+            tableHeader: { bold: true, fontSize: 12, color: "black" },
           },
           pageOrientation: "portrait",
           pageSize: "A4",
         };
-
         pdfMake.createPdf(docDefinition).open();
       }
 
-      // ฟังก์ชันสั่งพิมพ์เฉพาะตารางห้องเรียน
       function printClassroomTable() {
-        const printContents = document.getElementById(
-          "classroomTableWrapper"
-        ).innerHTML;
+        const printContents = document.getElementById("classroomTableWrapper").innerHTML;
         const originalContents = document.body.innerHTML;
-
         document.body.innerHTML = printContents;
-
         window.print();
-
         document.body.innerHTML = originalContents;
-
-        // รีโหลดสคริปต์หลังพิมพ์ (ถ้าจำเป็น)
         window.location.reload();
       }
 
-      // Hide results
       function hideResults() {
         document.getElementById("searchResults").classList.add("hidden");
         document.getElementById("noResults").classList.add("hidden");
       }
 
-      // Hide classroom results
       function hideClassroomResults() {
         document.getElementById("classroomResults").classList.add("hidden");
       }
-      document.addEventListener("DOMContentLoaded", (event) => {
-        // Initialize the application
-        fetchData();
-      });
+
+      document.addEventListener("DOMContentLoaded", () => fetchData());
 
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
-
-      // แสดงปุ่มเมื่อเลื่อนหน้าจอเกิน 100px
       window.addEventListener("scroll", () => {
         if (window.scrollY > 100) {
           scrollToTopBtn.classList.remove("opacity-0", "pointer-events-none");
@@ -762,29 +552,17 @@ switch ((item.resualt || "").trim()) {
         }
       });
 
-      // เมื่อกดปุ่ม ให้เลื่อนหน้าจอกลับไปบนสุดแบบนุ่มนวล
-      scrollToTopBtn.addEventListener("click", () => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      });
+      scrollToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
       const toggleBtn = document.getElementById("toggleSearchBtn");
       const searchSection = document.getElementById("searchSection");
-
       toggleBtn.addEventListener("click", () => {
-        if (
-          searchSection.style.maxHeight &&
-          searchSection.style.maxHeight !== "0px"
-        ) {
-          // ซ่อนริบบ้อน
+        if (searchSection.style.maxHeight && searchSection.style.maxHeight !== "0px") {
           searchSection.style.maxHeight = "0";
           searchSection.style.opacity = "0";
           searchSection.style.paddingTop = "0";
           searchSection.style.paddingBottom = "0";
         } else {
-          // แสดงริบบ้อน
           searchSection.style.maxHeight = searchSection.scrollHeight + "px";
           searchSection.style.opacity = "1";
           searchSection.style.paddingTop = "";
@@ -792,24 +570,16 @@ switch ((item.resualt || "").trim()) {
         }
       });
 
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        const splash = document.getElementById("splashScreen");
-        const main = document.getElementById("mainContent");
-
-        splash.style.opacity = 0;
-        splash.style.pointerEvents = "none";
-
-        // แสดงเนื้อหาเว็บแบบนุ่มนวล
-        main.style.opacity = 1;
-
-        // ซ่อน splash หลังแอนิเมชัน (500ms)
+      window.addEventListener("load", () => {
         setTimeout(() => {
-          splash.style.display = "none";
-        }, 500);
-      }, 2000); // 2 วินาที
-    });
-
+          const splash = document.getElementById("splashScreen");
+          const main = document.getElementById("mainContent");
+          splash.style.opacity = 0;
+          splash.style.pointerEvents = "none";
+          main.style.opacity = 1;
+          setTimeout(() => { splash.style.display = "none"; }, 500);
+        }, 2000);
+      });
     </script>
   </body>
 </html>
