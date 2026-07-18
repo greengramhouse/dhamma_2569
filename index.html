@@ -194,7 +194,8 @@
       const nameMatch = (item.name || "").replace(/\s+/g, "").toLowerCase().includes(term) ||
                         (item.surname || "").replace(/\s+/g, "").toLowerCase().includes(term);
       const classMatch = cls === "" || item.classroom === cls;
-      const statusMatch = st === "" || (item.Current_Certify || "").trim() === st;
+      // แก้ไขการกรองให้จับคู่จากคอลัมน์ Being_test (วุฒิที่จะสอบ)
+      const statusMatch = st === "" || (item.Being_test || "").trim() === st;
       
       return nameMatch && classMatch && statusMatch;
     });
@@ -235,7 +236,7 @@
   }
 
   function renderAll() {
-    // 1. อัปเดตสถิติ (นับจากคอลัมน์ Being_test ตามที่ระบุ)
+    // 1. อัปเดตสถิติ (นับจากคอลัมน์ Being_test)
     const levels = ["ตรีประถม","ตรีมัธยม","โทประถม","โทมัธยม","เอกประถม","เอกมัธยม"];
     const counts = {};
     levels.forEach(l => counts[l] = 0);
@@ -272,7 +273,8 @@
         const baseBg = i % 2 === 1 ? "#FCF8EF" : "#FFFFFF"; // ลายทาง Striped
         const fullName = `${item.gender || ""} ${item.name || "-"} ${item.surname || ""}`.trim();
         const icon = genderIcon(item.gender);
-        const cBadge = statusBadge((item.Current_Certify || "").trim());
+        // แก้ไขให้ badge วุฒิที่จะสอบ ดึงค่าจาก Being_test
+        const cBadge = statusBadge((item.Being_test || "").trim());
         const rBadge = resultBadge((item.resualt || "").trim());
 
         tbody.innerHTML += `
@@ -300,21 +302,23 @@
     const rows = getFiltered();
     if (rows.length === 0) { alert("ไม่มีข้อมูลสำหรับสร้าง PDF กรุณาเปลี่ยนเงื่อนไขการค้นหา"); return; }
     
+    // แก้ไขหัวคอลัมน์ PDF ให้ตรงกับตารางหน้าเว็บ
     const body = [[
       { text: "ลำดับ", style: "tableHeader", alignment: "center" },
-      { text: "คำนำหน้า", style: "tableHeader" },
       { text: "ชื่อ - นามสกุล", style: "tableHeader" },
       { text: "ห้องเรียน", style: "tableHeader", alignment: "center" },
+      { text: "วุฒิเดิม", style: "tableHeader", alignment: "center" },
       { text: "วุฒิที่จะสอบ", style: "tableHeader", alignment: "center" },
       { text: "ผลสอบ", style: "tableHeader", alignment: "center" },
     ]];
     
+    // แก้ไขข้อมูลที่ใส่ลง PDF ให้ตรงคอลัมน์
     rows.forEach((item, i) => {
       body.push([
         { text: i + 1, alignment: "center" },
-        item.gender || "-",
-        `${item.name || ""} ${item.surname || ""}`,
+        `${item.gender || ""} ${item.name || ""} ${item.surname || ""}`.trim(),
         { text: item.classroom || "-", alignment: "center" },
+        { text: item.Current_Certify || "-", alignment: "center" },
         { text: item.Being_test || "-", alignment: "center" },
         { text: item.resualt || "-", alignment: "center" },
       ]);
@@ -329,7 +333,8 @@
         { text: `ห้องเรียน: ${classFilter} | วุฒิที่จะสอบ: ${statusFilter}`, style: "subheader", alignment: "center", marginBottom: 10 },
         {
           style: "tableExample",
-          table: { headerRows: 1, widths: ["auto","auto","*","auto","auto","auto"], body },
+          // ปรับขนาดคอลัมน์ PDF
+          table: { headerRows: 1, widths: ["auto","*","auto","auto","auto","auto"], body },
           layout: { fillColor: (r) => r === 0 ? "#F6ECD4" : null }
         },
       ],
@@ -350,13 +355,14 @@
     const rows = getFiltered();
     if (rows.length === 0) { alert("ไม่มีข้อมูลสำหรับพิมพ์"); return; }
     
+    // แก้ไขคอลัมน์สำหรับหน้าพิมพ์ (Print)
     const trStr = rows.map((it, i) => `<tr>
       <td style="text-align:center">${i + 1}</td>
       <td>${it.gender || ""} ${it.name || "-"} ${it.surname || ""}</td>
-      <td>${it.classroom || "-"}</td>
-      <td>${it.status_class || "-"}</td>
-      <td>${(it.Current_Certify || "-").trim()}</td>
-      <td>${(it.resualt || "-").trim()}</td></tr>`).join("");
+      <td style="text-align:center">${it.classroom || "-"}</td>
+      <td style="text-align:center">${(it.Current_Certify || "-").trim()}</td>
+      <td style="text-align:center">${(it.Being_test || "-").trim()}</td>
+      <td style="text-align:center">${(it.resualt || "-").trim()}</td></tr>`).join("");
       
     const classFilter = document.getElementById("classSelect").value || "ทั้งหมด";
     const statusFilter = document.getElementById("statusSelect").value || "ทั้งหมด";
@@ -376,7 +382,7 @@
       </style></head><body>
       <h2>รายชื่อนักเรียนสอบธรรมศึกษา</h2>
       <p class="sub">ห้องเรียน: ${classFilter} | วุฒิที่จะสอบ: ${statusFilter}</p>
-      <table><thead><tr><th style="text-align:center">ลำดับ</th><th>ชื่อ - นามสกุล</th><th>ห้องเรียน</th><th>ระดับชั้น</th><th>วุฒิที่จะสอบ</th><th>ผลสอบ</th></tr></thead>
+      <table><thead><tr><th style="text-align:center">ลำดับ</th><th>ชื่อ - นามสกุล</th><th style="text-align:center">ห้องเรียน</th><th style="text-align:center">วุฒิเดิม</th><th style="text-align:center">วุฒิที่จะสอบ</th><th style="text-align:center">ผลสอบ</th></tr></thead>
       <tbody>${trStr}</tbody></table></body></html>`);
     w.document.close();
     w.focus();
