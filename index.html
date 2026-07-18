@@ -120,7 +120,7 @@
                 <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;width:70px;text-align:center;">ลำดับ</th>
                 <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">ชื่อ - นามสกุล</th>
                 <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">ห้องเรียน</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">ระดับชั้น</th>
+                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">วุฒิเดิม</th>
                 <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">วุฒิที่จะสอบ</th>
                 <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">ผลสอบ</th>
               </tr>
@@ -285,8 +285,8 @@
               </div>
             </td>
             <td style="padding:15px 20px;color:#6B5A3A;">${item.classroom || "-"}</td>
-            <td style="padding:15px 20px;color:#6B5A3A;">${item.Being_test || "-"}</td>
-            <td style="padding:15px 20px;color:#4A3D28;"><span style="${cBadge}">${(item.Current_Certify || "-").trim() || "-"}</span></td>
+            <td style="padding:15px 20px;color:#6B5A3A;">${item.Current_Certify || "-"}</td>
+            <td style="padding:15px 20px;color:#4A3D28;"><span style="${cBadge}">${(item.Being_test || "-").trim() || "-"}</span></td>
             <td style="padding:15px 20px;color:#4A3D28;"><span style="${rBadge}">${(item.resualt || "-").trim() || "-"}</span></td>
           </tr>
         `;
