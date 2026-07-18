@@ -16,10 +16,10 @@
   @keyframes om-spin { to { transform: rotate(360deg); } }
   @keyframes om-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   
-  /* เพิ่ม Animation กระพริบสำหรับสถานะ กำลังจะสอบ */
+  /* Animation กระพริบสำหรับสถานะ กำลังจะสอบ */
   @keyframes badge-pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50% { opacity: 0.5; }
   }
 
   ::selection { background: #E7D3A1; }
@@ -234,16 +234,16 @@
     const map = {
       "สอบผ่าน":       ["#EAF4EC", "#3F7A4C", ""],
       "สอบไม่ผ่าน":    ["#F8EAE8", "#9A3B2E", ""],
-      "ไม่ได้เข้าสอบ":   ["#F1EEE7", "#8A7E68", ""],
+      "ไม่ได้เข้าสอบ": ["#F1EEE7", "#8A7E68", ""],
       "รอผลสอบ":       ["#FBF2DA", "#8A6D2F", ""],
-      "กำลังจะสอบ":    ["#FBF2DA", "#8A6D2F", "animation: badge-pulse 1.5s infinite ease-in-out;"], // เปลี่ยนเป็นสีเหลืองและเพิ่มแอนิเมชันกระพริบ
+      // 🟡 เปลี่ยนพื้นหลังเป็นสีเหลืองเข้ม และตัวอักษรสีน้ำตาลเข้มจัด + ใส่ animation
+      "กำลังจะสอบ":    ["#F5C344", "#4A3600", "animation: badge-pulse 1.5s infinite ease-in-out;"], 
     };
     const c = map[str] || ["#F1EEE7", "#8A7E68", ""];
     return `display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:600;background:${c[0]};color:${c[1]};${c[2]}`;
   }
 
   function renderAll() {
-    // 1. อัปเดตสถิติ (นับจากคอลัมน์ Being_test)
     const levels = ["ตรีประถม","ตรีมัธยม","โทประถม","โทมัธยม","เอกประถม","เอกมัธยม", "สำเร็จนักธรรมเอกไปแล้ว"];
     const counts = {};
     levels.forEach(l => counts[l] = 0);
@@ -265,7 +265,6 @@
       `;
     });
 
-    // 2. อัปเดตตาราง
     const filtered = getFiltered();
     const tbody = document.getElementById("tableBody");
     const noResults = document.getElementById("noResultsView");
