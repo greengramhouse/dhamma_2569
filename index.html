@@ -194,7 +194,6 @@
       const nameMatch = (item.name || "").replace(/\s+/g, "").toLowerCase().includes(term) ||
                         (item.surname || "").replace(/\s+/g, "").toLowerCase().includes(term);
       const classMatch = cls === "" || item.classroom === cls;
-      // แก้ไขการกรองให้จับคู่จากคอลัมน์ Being_test (วุฒิที่จะสอบ)
       const statusMatch = st === "" || (item.Being_test || "").trim() === st;
       
       return nameMatch && classMatch && statusMatch;
@@ -208,18 +207,24 @@
     return "👤";
   }
 
+  // 🔴 ปรับ Logic การแยกสีให้จับคำว่า ตรี, โท, เอก แทนการระบุข้อความแบบเป๊ะๆ
   function statusBadge(str) {
-    const map = {
-      "ตรีประถม":  ["#EEF4EA", "#4E7A45", "#CFE3C4"],
-      "ตรีมัธยม":  ["#E7F0E2", "#3F6B37", "#BFD9B2"],
-      "โทประถม":   ["#EAF1F5", "#3E6884", "#C6DBE7"],
-      "โทมัธยม":   ["#E2ECF3", "#345A78", "#B5D0E0"],
-      "เอกประถม":  ["#FBF3DE", "#8A6D2F", "#E7D3A1"],
-      "เอกมัธยม":  ["#F7EBCB", "#7A5E23", "#DEC489"],
-      "ไม่มีรายชื่อสอบ": ["#F1EEE7", "#8A7E68", "#DED6C4"],
-      "สำเร็จนักธรรมเอกไปแล้ว": ["#F6ECD4", "#6B5A3A", "#D9BE7E"],
-    };
-    const c = map[str] || ["#F1EEE7", "#8A7E68", "#DED6C4"];
+    let c;
+    
+    if (str.includes("ตรี")) {
+      // กลุ่ม ตรี = โทนสีเขียว
+      c = ["#EEF4EA", "#4E7A45", "#CFE3C4"]; 
+    } else if (str.includes("โท")) {
+      // กลุ่ม โท = โทนสีฟ้า
+      c = ["#EAF1F5", "#3E6884", "#C6DBE7"];
+    } else if (str.includes("เอก") || str.includes("สำเร็จ")) {
+      // กลุ่ม เอก และ สำเร็จนักธรรมเอก = โทนสีทอง/เหลือง
+      c = ["#FBF3DE", "#8A6D2F", "#E7D3A1"];
+    } else {
+      // ไม่มีรายชื่อ หรือ อื่นๆ = โทนสีเทา
+      c = ["#F1EEE7", "#8A7E68", "#DED6C4"];
+    }
+    
     return `display:inline-flex;align-items:center;padding:5px 12px;border-radius:8px;font-size:12.5px;font-weight:600;background:${c[0]};color:${c[1]};border:1px solid ${c[2]};`;
   }
 
@@ -237,7 +242,7 @@
 
   function renderAll() {
     // 1. อัปเดตสถิติ (นับจากคอลัมน์ Being_test)
-    const levels = ["ตรีประถม","ตรีมัธยม","โทประถม","โทมัธยม","เอกประถม","เอกมัธยม"];
+    const levels = ["ตรีประถม","ตรีมัธยม","โทประถม","โทมัธยม","เอกประถม","เอกมัธยม", "สำเร็จนักธรรมเอกไปแล้ว"];
     const counts = {};
     levels.forEach(l => counts[l] = 0);
     
@@ -273,7 +278,6 @@
         const baseBg = i % 2 === 1 ? "#FCF8EF" : "#FFFFFF"; // ลายทาง Striped
         const fullName = `${item.gender || ""} ${item.name || "-"} ${item.surname || ""}`.trim();
         const icon = genderIcon(item.gender);
-        // แก้ไขให้ badge วุฒิที่จะสอบ ดึงค่าจาก Being_test
         const cBadge = statusBadge((item.Being_test || "").trim());
         const rBadge = resultBadge((item.resualt || "").trim());
 
@@ -302,7 +306,6 @@
     const rows = getFiltered();
     if (rows.length === 0) { alert("ไม่มีข้อมูลสำหรับสร้าง PDF กรุณาเปลี่ยนเงื่อนไขการค้นหา"); return; }
     
-    // แก้ไขหัวคอลัมน์ PDF ให้ตรงกับตารางหน้าเว็บ
     const body = [[
       { text: "ลำดับ", style: "tableHeader", alignment: "center" },
       { text: "ชื่อ - นามสกุล", style: "tableHeader" },
@@ -312,7 +315,6 @@
       { text: "ผลสอบ", style: "tableHeader", alignment: "center" },
     ]];
     
-    // แก้ไขข้อมูลที่ใส่ลง PDF ให้ตรงคอลัมน์
     rows.forEach((item, i) => {
       body.push([
         { text: i + 1, alignment: "center" },
@@ -333,7 +335,6 @@
         { text: `ห้องเรียน: ${classFilter} | วุฒิที่จะสอบ: ${statusFilter}`, style: "subheader", alignment: "center", marginBottom: 10 },
         {
           style: "tableExample",
-          // ปรับขนาดคอลัมน์ PDF
           table: { headerRows: 1, widths: ["auto","*","auto","auto","auto","auto"], body },
           layout: { fillColor: (r) => r === 0 ? "#F6ECD4" : null }
         },
@@ -355,7 +356,6 @@
     const rows = getFiltered();
     if (rows.length === 0) { alert("ไม่มีข้อมูลสำหรับพิมพ์"); return; }
     
-    // แก้ไขคอลัมน์สำหรับหน้าพิมพ์ (Print)
     const trStr = rows.map((it, i) => `<tr>
       <td style="text-align:center">${i + 1}</td>
       <td>${it.gender || ""} ${it.name || "-"} ${it.surname || ""}</td>
@@ -376,13 +376,14 @@
         h2{font-family:'Trirong',serif;text-align:center;color:#8A6D2F;margin:0 0 4px;}
         p.sub{text-align:center;color:#6B5A3A;margin:0 0 20px;}
         table{width:100%;border-collapse:collapse;font-size:14px;}
-        th{background:#F6ECD4;color:#5A4A2A;padding:9px 10px;border:1px solid #E3D4AE;text-align:left;}
+        th{background:#F6ECD4;color:#5A4A2A;padding:9px 10px;border:1px solid #E3D4AE;text-align:center;}
+        th:nth-child(2){text-align:left;}
         td{padding:8px 10px;border:1px solid #EadFc6;}
         tr:nth-child(even) td{background:#FCF8EF;}
       </style></head><body>
       <h2>รายชื่อนักเรียนสอบธรรมศึกษา</h2>
       <p class="sub">ห้องเรียน: ${classFilter} | วุฒิที่จะสอบ: ${statusFilter}</p>
-      <table><thead><tr><th style="text-align:center">ลำดับ</th><th>ชื่อ - นามสกุล</th><th style="text-align:center">ห้องเรียน</th><th style="text-align:center">วุฒิเดิม</th><th style="text-align:center">วุฒิที่จะสอบ</th><th style="text-align:center">ผลสอบ</th></tr></thead>
+      <table><thead><tr><th style="width:60px;">ลำดับ</th><th>ชื่อ - นามสกุล</th><th>ห้องเรียน</th><th>วุฒิเดิม</th><th>วุฒิที่จะสอบ</th><th>ผลสอบ</th></tr></thead>
       <tbody>${trStr}</tbody></table></body></html>`);
     w.document.close();
     w.focus();
