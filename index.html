@@ -15,7 +15,8 @@
   a:hover { color: #B4924C; }
   @keyframes om-spin { to { transform: rotate(360deg); } }
   @keyframes om-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  
+  @keyframes detail-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
   /* Animation กระพริบสำหรับสถานะ กำลังจะสอบ */
   @keyframes badge-pulse {
     0%, 100% { opacity: 1; }
@@ -24,7 +25,6 @@
 
   ::selection { background: #E7D3A1; }
 
-  /* แปลง style-focus และ style-hover จาก Framework เป็น CSS ปกติ */
   .custom-input:focus, .custom-select:focus {
     border-color: #B4924C !important;
     box-shadow: 0 0 0 3px rgba(180,146,76,.18) !important;
@@ -37,8 +37,77 @@
     filter: brightness(1.06);
     box-shadow: 0 6px 18px rgba(180,146,76,.55) !important;
   }
-  .tr-hover { transition: background .15s; }
-  .tr-hover:hover { background: #FCF5E1 !important; }
+
+  /* ---------- ตาราง ---------- */
+  .dtable { width: 100%; border-collapse: collapse; text-align: left; font-size: 14.5px; white-space: nowrap; min-width: 860px; }
+  .dtable thead tr { background: linear-gradient(180deg,#F6ECD4,#F0E4C6); }
+  .dtable th {
+    padding: 15px 20px; font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em;
+    font-weight: 700; color: #8A6D2F; border-bottom: 1px solid #E3D4AE;
+  }
+  .dtable td { padding: 15px 20px; }
+  .t-center { text-align: center; }
+
+  /* แถวหลัก: กดได้ */
+  tr.main-row { border-bottom: 1px solid #F0E7D3; cursor: pointer; transition: background .15s; }
+  tr.main-row:hover { background: #FCF5E1 !important; }
+  tr.main-row:focus-visible { outline: 2px solid #B4924C; outline-offset: -2px; }
+  tr.main-row.expanded { background: #FBF3DE !important; }
+
+  .chev {
+    width: 22px; height: 22px; flex: none; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: #F2E7CC; color: #8A6D2F; font-size: 10px;
+    transition: transform .22s ease, background .2s;
+  }
+  tr.main-row.expanded .chev { transform: rotate(180deg); background: #E7D3A1; }
+
+  /* แถวรายละเอียด */
+  tr.detail-row { display: none; }
+  tr.detail-row.open { display: table-row; }
+  tr.detail-row > td { padding: 0; border-bottom: 1px solid #F0E7D3; background: #FBF6EA; }
+  .detail-wrap { padding: 18px 22px 22px; animation: detail-in .22s ease both; white-space: normal; }
+  .detail-name {
+    font-family: 'Trirong', serif; font-size: 17px; font-weight: 600; color: #6B5A3A;
+    margin: 0 0 14px; padding-bottom: 10px; border-bottom: 1px dashed #E3D4AE;
+  }
+  .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .dt-item { background: #FFFFFF; border: 1px solid #EFE3C9; border-radius: 12px; padding: 11px 14px; }
+  .dt-label { display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #A08F6C; font-weight: 600; margin-bottom: 5px; }
+  .dt-value { display: block; font-size: 14.5px; color: #2B2118; font-weight: 500; word-break: break-word; }
+
+  .tap-hint { display: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .dtable { min-width: 0; }
+    .hide-md { display: none !important; }
+    .dtable th, .dtable td { padding: 13px 12px; }
+  }
+  @media (max-width: 720px) {
+    .hide-sm { display: none !important; }
+    .dtable { white-space: normal; font-size: 14px; }
+    .dtable th { padding: 12px 10px; font-size: 10.5px; letter-spacing: .04em; }
+    .dtable td { padding: 12px 10px; }
+    .name-cell span.avatar { display: none; }
+    .detail-wrap { padding: 14px 14px 18px; }
+    .detail-grid { grid-template-columns: 1fr; gap: 10px; }
+    .tap-hint { display: block; }
+    .hdr-inner { padding: 16px 14px !important; }
+    .hdr-title { font-size: 21px !important; }
+    .hdr-eyebrow { font-size: 10px !important; letter-spacing: .2em !important; }
+    .hdr-logo { width: 46px !important; height: 46px !important; font-size: 19px !important; }
+    .main-wrap { padding: 20px 14px 48px !important; }
+    .toolbar { padding: 14px !important; }
+    .stats-grid { grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)) !important; gap: 12px !important; }
+    .stats-grid > div { padding: 15px 12px !important; }
+    .btn-print, .btn-pdf { flex: 1; justify-content: center; }
+  }
+  @media (max-width: 460px) {
+    .hide-xs { display: none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .001s !important; transition-duration: .001s !important; }
+  }
 </style>
 </head>
 <body>
@@ -46,12 +115,12 @@
 
   <!-- Header -->
   <header style="background:linear-gradient(135deg,#191309 0%,#2C2013 55%,#3A2A16 100%);border-bottom:2px solid #B4924C;box-shadow:0 8px 30px rgba(40,28,10,.28);">
-    <div style="max-width:1200px;margin:0 auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div class="hdr-inner" style="max-width:1200px;margin:0 auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
       <div style="display:flex;align-items:center;gap:16px;">
-        <div style="width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#E7C878,#B4924C 55%,#8A6D2F);color:#2A1E0C;display:flex;align-items:center;justify-content:center;font-family:'Trirong',serif;font-weight:700;font-size:24px;box-shadow:0 6px 18px rgba(180,146,76,.5),inset 0 1px 2px rgba(255,255,255,.6);">ธรรม</div>
+        <div class="hdr-logo" style="width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#E7C878,#B4924C 55%,#8A6D2F);color:#2A1E0C;display:flex;align-items:center;justify-content:center;font-family:'Trirong',serif;font-weight:700;font-size:24px;box-shadow:0 6px 18px rgba(180,146,76,.5),inset 0 1px 2px rgba(255,255,255,.6);">ธรรม</div>
         <div>
-          <div style="font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#C6A961;font-weight:600;margin-bottom:2px;">Dhamma Studies Registry</div>
-          <h1 style="margin:0;font-family:'Trirong',serif;font-weight:600;font-size:28px;line-height:1.15;background:linear-gradient(90deg,#F3E2B8,#D9BE7E,#C6A961);-webkit-background-clip:text;background-clip:text;color:transparent;">ระบบข้อมูลธรรมศึกษา</h1>
+          <div class="hdr-eyebrow" style="font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#C6A961;font-weight:600;margin-bottom:2px;">Dhamma Studies Registry</div>
+          <h1 class="hdr-title" style="margin:0;font-family:'Trirong',serif;font-weight:600;font-size:28px;line-height:1.15;background:linear-gradient(90deg,#F3E2B8,#D9BE7E,#C6A961);-webkit-background-clip:text;background-clip:text;color:transparent;">ระบบข้อมูลธรรมศึกษา</h1>
           <p style="margin:2px 0 0;font-size:13.5px;color:#C9BCA0;letter-spacing:.04em;">ปีการศึกษา ๒๕๖๙</p>
         </div>
       </div>
@@ -62,7 +131,7 @@
     </div>
   </header>
 
-  <main style="max-width:1200px;margin:0 auto;padding:32px 24px 64px;">
+  <main class="main-wrap" style="max-width:1200px;margin:0 auto;padding:32px 24px 64px;">
 
     <!-- Loading View -->
     <div id="loadingView" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 0;">
@@ -79,12 +148,12 @@
     <div id="readyView" style="display:none;animation:om-fade .5s ease both;">
 
       <!-- Stats Grid -->
-      <div id="statsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px;">
+      <div id="statsGrid" class="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px;">
         <!-- Stats Injected via JS -->
       </div>
 
       <!-- Toolbar -->
-      <div style="background:linear-gradient(180deg,#FFFFFF,#FCF8EF);border:1px solid #E8DEC8;border-radius:18px;padding:18px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;box-shadow:0 6px 22px rgba(120,96,48,.08);">
+      <div class="toolbar" style="background:linear-gradient(180deg,#FFFFFF,#FCF8EF);border:1px solid #E8DEC8;border-radius:18px;padding:18px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;box-shadow:0 6px 22px rgba(120,96,48,.08);">
         <div style="display:flex;flex-wrap:wrap;gap:12px;flex:1;min-width:260px;">
           <div style="position:relative;flex:1;min-width:220px;">
             <span style="position:absolute;top:50%;left:14px;transform:translateY(-50%);color:#B4924C;font-size:15px;">🔍</span>
@@ -112,25 +181,30 @@
             <option value="สำเร็จนักธรรมเอกไปแล้ว">สำเร็จนักธรรมเอกไปแล้ว</option>
           </select>
         </div>
-        <div style="display:flex;gap:10px;">
+        <div style="display:flex;gap:10px;width:100%;max-width:100%;flex:0 1 auto;">
           <button onclick="printReport()" class="btn-print" style="display:flex;align-items:center;gap:7px;padding:11px 20px;border-radius:11px;border:1px solid #E1D4B4;background:#FEFCF7;color:#6B5A3A;font-family:'Sarabun',sans-serif;font-size:14.5px;font-weight:600;cursor:pointer;transition:all 0.2s;">🖨️ พิมพ์</button>
           <button onclick="exportPDF()" class="btn-pdf" style="display:flex;align-items:center;gap:7px;padding:11px 20px;border-radius:11px;border:1px solid transparent;background:linear-gradient(135deg,#C6A961,#B4924C 55%,#8A6D2F);color:#2A1E0C;font-family:'Sarabun',sans-serif;font-size:14.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(180,146,76,.4);transition:all 0.2s;">📄 โหลด PDF</button>
         </div>
       </div>
 
+      <!-- คำแนะนำ (แสดงเฉพาะจอเล็ก) -->
+      <p class="tap-hint" style="margin:-8px 0 14px;font-size:13px;color:#8A7A5C;text-align:center;">
+        👆 แตะที่แถวรายชื่อ เพื่อดูรายละเอียดทั้งหมด
+      </p>
+
       <!-- Data Table -->
       <div style="background:#FFFFFF;border:1px solid #E8DEC8;border-radius:18px;overflow:hidden;box-shadow:0 8px 28px rgba(120,96,48,.09);">
         <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;text-align:left;font-size:14.5px;white-space:nowrap;min-width:820px;">
+          <table class="dtable">
             <thead>
-              <tr style="background:linear-gradient(180deg,#F6ECD4,#F0E4C6);">
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;width:70px;text-align:center;">ลำดับ</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;">ชื่อ - นามสกุล</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;text-align:center;">เลขที่สอบ</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;text-align:center;">ห้องเรียน</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;text-align:center;">วุฒิเดิม</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;text-align:center;">วุฒิที่จะสอบ</th>
-                <th style="padding:15px 20px;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#8A6D2F;border-bottom:1px solid #E3D4AE;text-align:center;">ผลสอบ</th>
+              <tr>
+                <th class="t-center" style="width:70px;">ลำดับ</th>
+                <th>ชื่อ - นามสกุล</th>
+                <th class="t-center hide-sm">เลขที่สอบ</th>
+                <th class="t-center hide-sm">ห้องเรียน</th>
+                <th class="t-center hide-md">วุฒิเดิม</th>
+                <th class="t-center hide-xs">วุฒิที่จะสอบ</th>
+                <th class="t-center">ผลสอบ</th>
               </tr>
             </thead>
             <tbody id="tableBody">
@@ -138,7 +212,7 @@
             </tbody>
           </table>
         </div>
-        
+
         <!-- No Results -->
         <div id="noResultsView" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:72px 20px;color:#9A8A68;">
           <div style="font-size:44px;margin-bottom:14px;opacity:.5;">🔍</div>
@@ -154,15 +228,48 @@
 <script>
   let allData = [];
 
+  /* คอลัมน์ที่ระบบรู้จักอยู่แล้ว (ใช้แยกว่าอันไหนเป็นฟิลด์ "อื่น ๆ" จาก Google Sheets) */
+  const KNOWN_KEYS = ["gender","name","surname","codecer","classroom","Current_Certify","Being_test","resualt"];
+
+  /* ชื่อภาษาไทยของแต่ละคอลัมน์ — ถ้ามีคอลัมน์ใหม่ในชีต เพิ่มชื่อไว้ตรงนี้ได้เลย */
+  const FIELD_LABELS = {
+    codecer: "เลขที่สอบ",
+    classroom: "ห้องเรียน",
+    Current_Certify: "วุฒิเดิม",
+    Being_test: "วุฒิที่จะสอบ",
+    resualt: "ผลสอบ",
+    gender: "คำนำหน้า",
+    name: "ชื่อ",
+    surname: "นามสกุล"
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
     setupPdfFonts();
     fetchData();
-    
-    // ผูก Event การค้นหาและการกรอง
+
     document.getElementById("searchInput").addEventListener("input", renderAll);
     document.getElementById("classSelect").addEventListener("change", renderAll);
     document.getElementById("statusSelect").addEventListener("change", renderAll);
+
+    /* คลิก / แตะ ที่แถว เพื่อเปิด-ปิดรายละเอียด */
+    const tbody = document.getElementById("tableBody");
+    tbody.addEventListener("click", (e) => {
+      const tr = e.target.closest("tr.main-row");
+      if (tr) toggleDetail(tr.dataset.idx);
+    });
+    /* รองรับคีย์บอร์ด (Enter / Space) */
+    tbody.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const tr = e.target.closest("tr.main-row");
+      if (tr) { e.preventDefault(); toggleDetail(tr.dataset.idx); }
+    });
   });
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, (m) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[m]));
+  }
 
   function setupPdfFonts() {
     if (window.pdfMake) {
@@ -179,12 +286,12 @@
     try {
       const res = await fetch("https://opensheet.elk.sh/1KJ9U3ImzEG8--cIbn_BiACQPfJzrGz3vxbIfBjBYTug/data");
       allData = await res.json();
-      
+
       document.getElementById("totalCountDisplay").textContent = allData.length;
-      
+
       document.getElementById("loadingView").style.display = "none";
       document.getElementById("readyView").style.display = "block";
-      
+
       renderAll();
     } catch (e) {
       console.error("Error fetching data:", e);
@@ -197,13 +304,13 @@
     const term = document.getElementById("searchInput").value.toLowerCase().replace(/\s+/g, "");
     const cls = document.getElementById("classSelect").value;
     const st = document.getElementById("statusSelect").value;
-    
+
     return allData.filter((item) => {
       const nameMatch = (item.name || "").replace(/\s+/g, "").toLowerCase().includes(term) ||
                         (item.surname || "").replace(/\s+/g, "").toLowerCase().includes(term);
       const classMatch = cls === "" || item.classroom === cls;
       const statusMatch = st === "" || (item.Being_test || "").trim() === st;
-      
+
       return nameMatch && classMatch && statusMatch;
     });
   }
@@ -218,7 +325,7 @@
   function statusBadge(str) {
     let c;
     if (str.includes("ตรี")) {
-      c = ["#EEF4EA", "#4E7A45", "#CFE3C4"]; 
+      c = ["#EEF4EA", "#4E7A45", "#CFE3C4"];
     } else if (str.includes("โท")) {
       c = ["#EAF1F5", "#3E6884", "#C6DBE7"];
     } else if (str.includes("เอก") || str.includes("สำเร็จ")) {
@@ -230,76 +337,122 @@
   }
 
   function resultBadge(str) {
-    // Array: [สีพื้นหลัง, สีตัวอักษร, คำสั่ง CSS เพิ่มเติม]
     const map = {
       "สอบผ่าน":       ["#EAF4EC", "#3F7A4C", ""],
       "สอบไม่ผ่าน":    ["#F8EAE8", "#9A3B2E", ""],
       "ไม่ได้เข้าสอบ": ["#F1EEE7", "#8A7E68", ""],
       "รอผลสอบ":       ["#FBF2DA", "#8A6D2F", ""],
-      // 🟡 เปลี่ยนพื้นหลังเป็นสีเหลืองเข้ม และตัวอักษรสีน้ำตาลเข้มจัด + ใส่ animation
-      "กำลังจะสอบ":    ["#F5C344", "#4A3600", "animation: badge-pulse 1.5s infinite ease-in-out;"], 
+      "กำลังจะสอบ":    ["#F5C344", "#4A3600", "animation: badge-pulse 1.5s infinite ease-in-out;"],
     };
     const c = map[str] || ["#F1EEE7", "#8A7E68", ""];
     return `display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:600;background:${c[0]};color:${c[1]};${c[2]}`;
+  }
+
+  /* เปิด-ปิดแถวรายละเอียด */
+  function toggleDetail(idx) {
+    const row = document.querySelector(`tr.main-row[data-idx="${idx}"]`);
+    const detail = document.getElementById("detail-" + idx);
+    if (!row || !detail) return;
+
+    const willOpen = !detail.classList.contains("open");
+    detail.classList.toggle("open", willOpen);
+    row.classList.toggle("expanded", willOpen);
+    row.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  }
+
+  /* สร้างเนื้อหาในแถวรายละเอียด — รวมฟิลด์อื่น ๆ ที่มีในชีตโดยอัตโนมัติ */
+  function buildDetail(item, fullName) {
+    const cells = [];
+
+    cells.push(["เลขที่สอบ", esc((item.codecer || "-").toString().trim() || "-")]);
+    cells.push(["ห้องเรียน", esc((item.classroom || "-").toString().trim() || "-")]);
+    cells.push(["วุฒิเดิม", esc((item.Current_Certify || "-").toString().trim() || "-")]);
+
+    const being = (item.Being_test || "").trim();
+    cells.push(["วุฒิที่จะสอบ", `<span style="${statusBadge(being)}">${esc(being || "-")}</span>`]);
+
+    const result = (item.resualt || "").trim();
+    cells.push(["ผลสอบ", `<span style="${resultBadge(result)}">${esc(result || "-")}</span>`]);
+
+    /* ฟิลด์อื่น ๆ ที่ไม่อยู่ในรายการข้างบน จะถูกดึงมาแสดงเองทั้งหมด */
+    Object.keys(item).forEach((k) => {
+      if (KNOWN_KEYS.includes(k)) return;
+      const val = (item[k] == null ? "" : String(item[k])).trim();
+      if (val === "") return;
+      cells.push([esc(FIELD_LABELS[k] || k), esc(val)]);
+    });
+
+    const grid = cells.map(([label, value]) =>
+      `<div class="dt-item"><span class="dt-label">${label}</span><span class="dt-value">${value}</span></div>`
+    ).join("");
+
+    return `<div class="detail-wrap">
+      <p class="detail-name">${esc(fullName)}</p>
+      <div class="detail-grid">${grid}</div>
+    </div>`;
   }
 
   function renderAll() {
     const levels = ["ตรีประถม","ตรีมัธยม","โทประถม","โทมัธยม","เอกประถม","เอกมัธยม", "สำเร็จนักธรรมเอกไปแล้ว"];
     const counts = {};
     levels.forEach(l => counts[l] = 0);
-    
+
     allData.forEach(item => {
       const s = (item.Being_test || "").trim();
       if (counts.hasOwnProperty(s)) counts[s]++;
     });
 
     const statsGrid = document.getElementById("statsGrid");
-    statsGrid.innerHTML = "";
-    levels.filter(l => counts[l] > 0).forEach(l => {
-      statsGrid.innerHTML += `
-        <div style="position:relative;background:linear-gradient(180deg,#FFFFFF,#FCF8EF);border:1px solid #E8DEC8;border-radius:16px;padding:20px 18px;text-align:center;box-shadow:0 4px 16px rgba(120,96,48,.07);overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E7C878,#B4924C,#8A6D2F);"></div>
-          <p style="margin:6px 0 8px;font-size:12.5px;font-weight:600;color:#8A7A5C;letter-spacing:.02em;">${l}</p>
-          <div style="font-family:'Trirong',serif;font-weight:700;font-size:34px;line-height:1;color:#8A6D2F;">${counts[l]}</div>
-        </div>
-      `;
-    });
+    statsGrid.innerHTML = levels.filter(l => counts[l] > 0).map(l => `
+      <div style="position:relative;background:linear-gradient(180deg,#FFFFFF,#FCF8EF);border:1px solid #E8DEC8;border-radius:16px;padding:20px 18px;text-align:center;box-shadow:0 4px 16px rgba(120,96,48,.07);overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E7C878,#B4924C,#8A6D2F);"></div>
+        <p style="margin:6px 0 8px;font-size:12.5px;font-weight:600;color:#8A7A5C;letter-spacing:.02em;">${l}</p>
+        <div style="font-family:'Trirong',serif;font-weight:700;font-size:34px;line-height:1;color:#8A6D2F;">${counts[l]}</div>
+      </div>
+    `).join("");
 
     const filtered = getFiltered();
     const tbody = document.getElementById("tableBody");
     const noResults = document.getElementById("noResultsView");
-    
-    tbody.innerHTML = "";
-    
-    if (filtered.length === 0) {
-      noResults.style.display = "flex";
-    } else {
-      noResults.style.display = "none";
-      filtered.forEach((item, i) => {
-        const baseBg = i % 2 === 1 ? "#FCF8EF" : "#FFFFFF";
-        const fullName = `${item.gender || ""} ${item.name || "-"} ${item.surname || ""}`.trim();
-        const icon = genderIcon(item.gender);
-        const cBadge = statusBadge((item.Being_test || "").trim());
-        const rBadge = resultBadge((item.resualt || "").trim());
 
-        tbody.innerHTML += `
-          <tr class="tr-hover" style="background:${baseBg};border-bottom:1px solid #F0E7D3;">
-            <td style="padding:15px 20px;text-align:center;font-weight:600;color:#9A8A68;font-family:'Trirong',serif;">${i + 1}</td>
-            <td style="padding:15px 20px;color:#4A3D28;">
-              <div style="display:flex;align-items:center;gap:12px;">
-                <span style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:50%;background:linear-gradient(135deg,#F6ECD4,#EBDBB2);font-size:16px;">${icon}</span>
-                <span style="font-weight:600;color:#2B2118;">${fullName}</span>
-              </div>
-            </td>
-            <td style="padding:15px 20px;text-align:center;color:#6B5A3A;font-weight:500;">${item.codecer || "-"}</td>
-            <td style="padding:15px 20px;text-align:center;color:#6B5A3A;">${item.classroom || "-"}</td>
-            <td style="padding:15px 20px;text-align:center;color:#6B5A3A;">${item.Current_Certify || "-"}</td>
-            <td style="padding:15px 20px;text-align:center;color:#4A3D28;"><span style="${cBadge}">${(item.Being_test || "-").trim() || "-"}</span></td>
-            <td style="padding:15px 20px;text-align:center;color:#4A3D28;"><span style="${rBadge}">${(item.resualt || "-").trim() || "-"}</span></td>
-          </tr>
-        `;
-      });
+    if (filtered.length === 0) {
+      tbody.innerHTML = "";
+      noResults.style.display = "flex";
+      return;
     }
+
+    noResults.style.display = "none";
+
+    const html = filtered.map((item, i) => {
+      const baseBg = i % 2 === 1 ? "#FCF8EF" : "#FFFFFF";
+      const fullName = `${item.gender || ""} ${item.name || "-"} ${item.surname || ""}`.trim();
+      const icon = genderIcon(item.gender);
+      const cBadge = statusBadge((item.Being_test || "").trim());
+      const rBadge = resultBadge((item.resualt || "").trim());
+
+      return `
+        <tr class="main-row" data-idx="${i}" tabindex="0" role="button" aria-expanded="false" aria-controls="detail-${i}" style="background:${baseBg};">
+          <td class="t-center" style="font-weight:600;color:#9A8A68;font-family:'Trirong',serif;">${i + 1}</td>
+          <td class="name-cell" style="color:#4A3D28;">
+            <div style="display:flex;align-items:center;gap:11px;">
+              <span class="avatar" style="width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:50%;background:linear-gradient(135deg,#F6ECD4,#EBDBB2);font-size:16px;">${icon}</span>
+              <span style="font-weight:600;color:#2B2118;flex:1;">${esc(fullName)}</span>
+              <span class="chev" aria-hidden="true">▼</span>
+            </div>
+          </td>
+          <td class="t-center hide-sm" style="color:#6B5A3A;font-weight:500;">${esc(item.codecer || "-")}</td>
+          <td class="t-center hide-sm" style="color:#6B5A3A;">${esc(item.classroom || "-")}</td>
+          <td class="t-center hide-md" style="color:#6B5A3A;">${esc(item.Current_Certify || "-")}</td>
+          <td class="t-center hide-xs"><span style="${cBadge}">${esc((item.Being_test || "-").trim() || "-")}</span></td>
+          <td class="t-center"><span style="${rBadge}">${esc((item.resualt || "-").trim() || "-")}</span></td>
+        </tr>
+        <tr class="detail-row" id="detail-${i}">
+          <td colspan="7">${buildDetail(item, fullName)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.innerHTML = html;
   }
 
   // --- PDF & PRINT FUNCTIONS ---
@@ -307,7 +460,7 @@
   function exportPDF() {
     const rows = getFiltered();
     if (rows.length === 0) { alert("ไม่มีข้อมูลสำหรับสร้าง PDF กรุณาเปลี่ยนเงื่อนไขการค้นหา"); return; }
-    
+
     const body = [[
       { text: "ลำดับ", style: "tableHeader", alignment: "center" },
       { text: "ชื่อ - นามสกุล", style: "tableHeader" },
@@ -317,7 +470,7 @@
       { text: "วุฒิที่จะสอบ", style: "tableHeader", alignment: "center" },
       { text: "ผลสอบ", style: "tableHeader", alignment: "center" },
     ]];
-    
+
     rows.forEach((item, i) => {
       body.push([
         { text: i + 1, alignment: "center" },
@@ -329,10 +482,10 @@
         { text: item.resualt || "-", alignment: "center" },
       ]);
     });
-    
+
     const classFilter = document.getElementById("classSelect").value || "ทั้งหมด";
     const statusFilter = document.getElementById("statusSelect").value || "ทั้งหมด";
-    
+
     const docDefinition = {
       content: [
         { text: "รายงานรายชื่อนักเรียนสอบธรรมศึกษา", style: "header", alignment: "center" },
@@ -359,7 +512,7 @@
   function printReport() {
     const rows = getFiltered();
     if (rows.length === 0) { alert("ไม่มีข้อมูลสำหรับพิมพ์"); return; }
-    
+
     const trStr = rows.map((it, i) => `<tr>
       <td style="text-align:center">${i + 1}</td>
       <td>${it.gender || ""} ${it.name || "-"} ${it.surname || ""}</td>
@@ -368,10 +521,10 @@
       <td style="text-align:center">${(it.Current_Certify || "-").trim()}</td>
       <td style="text-align:center">${(it.Being_test || "-").trim()}</td>
       <td style="text-align:center">${(it.resualt || "-").trim()}</td></tr>`).join("");
-      
+
     const classFilter = document.getElementById("classSelect").value || "ทั้งหมด";
     const statusFilter = document.getElementById("statusSelect").value || "ทั้งหมด";
-    
+
     const w = window.open("", "_blank");
     w.document.write(`<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8">
       <title>รายชื่อนักเรียนสอบธรรมศึกษา</title>
